@@ -1,0 +1,38 @@
+{
+  "name": "churchapp",
+  "version": "1.2.0",
+  "description": "교회 헌금 정산기",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ggr0918/churchapp.git"
+  },
+  "build": {
+    "appId": "com.church.offering.app",
+    "productName": "교회 헌금 정산기",
+    "win": {
+      "target": "nsis"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "ggr0918",
+        "repo": "churchapp"
+      }
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^45.3.2",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  }
+}
