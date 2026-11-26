@@ -1,0 +1,234 @@
+/* style.css */
+
+/* 기본 스케일 변수 */
+:root {
+    --print-scale: 1;
+    --print-head-font: 8pt;
+    --print-data-font: 10pt;
+    --print-row-height: 22px;
+}
+
+/* 스크롤바 생성/소멸 시 전체 UI가 좌우로 밀리는 현상 방지 */
+html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+}
+
+body { font-family: 'Malgun Gothic', '맑은 고딕', dotum, sans-serif; transition: background-color 0.3s, color 0.3s; }
+
+/* 내부 스크롤 영역도 스크롤바 공간 고정 */
+.custom-scrollbar {
+    scrollbar-gutter: stable;
+}
+.custom-scrollbar::-webkit-scrollbar { height: 10px; width: 10px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; border-radius: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; border: 2px solid transparent; background-clip: padding-box; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; border: 2px solid transparent; background-clip: padding-box; }
+.dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border: 2px solid transparent; background-clip: padding-box; }
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; border: 2px solid transparent; background-clip: padding-box; }
+
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+.check-ui { width: 18px; height: 18px; cursor: pointer; accent-color: #4f46e5; }
+.dark .check-ui { accent-color: #818cf8; }
+
+/* ==========================================
+   다크 모드 화면 가시성 보정 (인쇄/미리보기 제외)
+   ========================================== */
+html.dark body:not(.preview-mode) select {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+    border-color: #475569 !important;
+}
+html.dark body:not(.preview-mode) select option {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+
+/* 헌금 기부 확인증: 하얀 배경 유지 및 내부/하단 모든 글씨·테두리를 검정색 문서 양식으로 통일 */
+html.dark body:not(.preview-mode) #receiptPrintArea {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #000000 !important;
+}
+html.dark body:not(.preview-mode) #receiptPrintArea,
+html.dark body:not(.preview-mode) #receiptPrintArea * {
+    color: #000000 !important;
+}
+html.dark body:not(.preview-mode) #receiptPrintArea .border-black {
+    border-color: #000000 !important;
+}
+
+#dedicatedPrintArea { display: none; }
+
+/* ==========================================
+   인쇄 및 미리보기 공통 텍스트 폰트 서식
+   ========================================== */
+.print-wrapper { width: 100%; box-sizing: border-box; border: 2px solid #000; padding: 0; margin: 0; background-color: #fff; page-break-inside: avoid; }
+.print-header-table { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 0; }
+.print-header-table th, .print-header-table td { border: 1px solid #000; padding: 3px 2px; text-align: center; vertical-align: middle; word-break: keep-all; }
+.print-header-table > tbody > tr:first-child > th,
+.print-header-table tr:first-child th { border-top: none; }
+.print-header-table tr > th:first-child,
+.print-header-table tr > td:first-child { border-left: none; }
+.print-header-table tr > th:last-child,
+.print-header-table tr > td:last-child { border-right: none; }
+
+.print-data-table { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 0; }
+.print-data-table th, .print-data-table td { border: 1px solid #000; padding: 2px 1px; text-align: center; vertical-align: middle; font-size: var(--print-data-font); height: var(--print-row-height); word-break: keep-all; }
+.print-data-table th { font-weight: bold; font-size: var(--print-head-font); letter-spacing: -0.6px; padding: 2px 0; white-space: nowrap; }
+.print-data-table tr > th:first-child, .print-data-table tr > td:first-child { border-left: none; }
+.print-data-table tr > th:last-child, .print-data-table tr > td:last-child { border-right: none; }
+.print-data-table tfoot tr:last-child td { border-bottom: none; }
+
+.text-title { font-size: 18pt; font-weight: 800; letter-spacing: 2px; padding: 6px; }
+.text-meta { font-size: 13pt; font-weight: bold; padding: 4px 2px; }
+.text-body { font-size: var(--print-data-font); height: var(--print-row-height); padding: 2px 1px; }
+.text-sign-space { font-size: 11pt; font-weight: normal; height: 52px; vertical-align: bottom; color: #555; padding-bottom: 5px; }
+.border-right-thick { border-right: 2px solid #000; }
+
+/* ★ 주차별 예배 상세 내역 블록 (중간 잘림 방지) */
+.print-week-block {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    margin-bottom: 14px;
+}
+
+/* ==========================================
+   스크린 인쇄 미리보기 모드 (프로그램 전용)
+   ========================================== */
+body.preview-mode {
+    background-color: #525659 !important;
+    padding-top: 80px !important;
+    padding-bottom: 50px !important;
+    overflow-y: auto !important;
+}
+body.preview-mode header,
+body.preview-mode #tabMenu,
+body.preview-mode .no-print {
+    display: none !important;
+}
+
+body.preview-mode[data-print="calc"] #webMainContent { display: none !important; }
+body.preview-mode[data-print="calc"] #dedicatedPrintArea { display: block !important; }
+body.preview-mode:not([data-print="calc"]) #dedicatedPrintArea { display: none !important; }
+
+body.preview-mode[data-print="registry"] #calcView, body.preview-mode[data-print="registry"] #statsView, body.preview-mode[data-print="registry"] #receiptView { display: none !important; }
+body.preview-mode[data-print="stats"] #calcView, body.preview-mode[data-print="stats"] #registryView, body.preview-mode[data-print="stats"] #receiptView { display: none !important; }
+body.preview-mode[data-print="receipt"] #calcView, body.preview-mode[data-print="receipt"] #registryView, body.preview-mode[data-print="stats"] #receiptView { display: none !important; }
+
+body.preview-mode #dedicatedPrintArea,
+body.preview-mode[data-print="registry"] #registryView,
+body.preview-mode[data-print="stats"] #statsView,
+body.preview-mode[data-print="receipt"] #receiptView {
+    background-color: white !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 auto !important;
+    padding: 10mm 5mm !important;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5) !important;
+    color: black !important;
+    box-sizing: border-box !important;
+}
+
+/* 미리보기 모드에서 결산 2페이지 구분선 표시 및 숨김 처리 */
+body.preview-mode.hide-stats-worship #statsWorshipPrintSection { display: none !important; }
+body.preview-mode[data-print="stats"] #statsWorshipPrintSection {
+    margin-top: 24px !important;
+    padding-top: 20px !important;
+    border-top: 2px dashed #94a3b8 !important;
+}
+
+body.preview-mode .print-shadow, body.preview-mode .shadow-sm { box-shadow: none !important; border: none !important; padding: 0 !important; }
+body.preview-mode .rounded-2xl, body.preview-mode .rounded-xl { border-radius: 0 !important; }
+body.preview-mode .overflow-x-auto, body.preview-mode .custom-scrollbar { overflow: visible !important; max-height: none !important; }
+body.preview-mode #receiptPrintArea { display: block !important; border: none !important; padding: 0 !important; margin: 0 !important; }
+
+body.preview-mode * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+body.preview-mode .print-wrapper { border: 2px solid #000 !important; }
+body.preview-mode .print-header-table th, body.preview-mode .print-header-table td,
+body.preview-mode .print-data-table th, body.preview-mode .print-data-table td { border-color: #000 !important; color: black !important; }
+body.preview-mode .print-header-table tr:first-child th { border-top: none !important; }
+body.preview-mode .print-header-table tr > th:first-child, body.preview-mode .print-header-table tr > td:first-child,
+body.preview-mode .print-data-table tr > th:first-child, body.preview-mode .print-data-table tr > td:first-child { border-left: none !important; }
+body.preview-mode .print-header-table tr > th:last-child, body.preview-mode .print-header-table tr > td:last-child,
+body.preview-mode .print-data-table tr > th:last-child, body.preview-mode .print-data-table tr > td:last-child { border-right: none !important; }
+body.preview-mode .print-data-table tfoot tr:last-child td { border-bottom: none !important; }
+#printPreviewToolbar, #printPreviewToolbar * { color: white !important; }
+
+/* Tailwind print:* 옵션들을 미리보기 모드에서도 강제 실행 */
+body.preview-mode .print\:block { display: block !important; }
+body.preview-mode .print\:hidden { display: none !important; }
+body.preview-mode .print\:border { border-width: 1px !important; border-style: solid !important; }
+body.preview-mode .print\:border-black { border-color: black !important; }
+body.preview-mode .print\:border-none { border-style: none !important; }
+body.preview-mode .print\:text-black { color: black !important; }
+body.preview-mode .print\:text-center { text-align: center !important; }
+body.preview-mode .print\:border-b-2 { border-bottom-width: 2px !important; border-bottom-style: solid !important; }
+body.preview-mode .print\:border-t-2 { border-top-width: 2px !important; border-top-style: solid !important; }
+body.preview-mode .print\:static { position: static !important; }
+body.preview-mode .print\:max-h-none { max-height: none !important; }
+body.preview-mode .print\:overflow-visible { overflow: visible !important; }
+body.preview-mode .print\:p-0 { padding: 0 !important; }
+
+/* ==========================================
+   스마트 인쇄(Print) 전용 제어 - 실제 프린터 전송 시
+   ========================================== */
+@media print {
+    @page { size: A4 portrait; margin: 10mm 5mm; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; font-family: 'Malgun Gothic', '맑은 고딕', sans-serif !important; color: black !important; }
+    
+    header, #tabMenu, .no-print, #printPreviewToolbar { display: none !important; }
+    html, body, body.preview-mode { background-color: white !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; scrollbar-gutter: auto !important; }
+    
+    body[data-print="calc"] #webMainContent { display: none !important; }
+    body[data-print="calc"] #dedicatedPrintArea { display: block !important; margin: 0 !important; padding: 0 !important; width: 100% !important; box-shadow: none !important; }
+    body:not([data-print="calc"]) #dedicatedPrintArea { display: none !important; }
+    
+    body[data-print="registry"] #calcView, body[data-print="registry"] #statsView, body[data-print="registry"] #receiptView { display: none !important; }
+    body[data-print="stats"] #calcView, body[data-print="stats"] #registryView, body[data-print="stats"] #receiptView { display: none !important; }
+    body[data-print="receipt"] #calcView, body[data-print="receipt"] #registryView, body[data-print="stats"] #receiptView { display: none !important; }
+
+    /* ★ 결산 보고서 1페이지 고정 및 2페이지 예배 상세 내역 강제 페이지 분리 */
+    body.hide-stats-worship #statsWorshipPrintSection { display: none !important; }
+    body[data-print="stats"] #statsPage1Container {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+    body[data-print="stats"] #statsWorshipPrintSection {
+        page-break-before: always !important;
+        break-before: page !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        border-top: none !important;
+    }
+
+    .print-shadow, .shadow-sm { box-shadow: none !important; border: none !important; padding: 0 !important; }
+    .rounded-2xl, .rounded-xl { border-radius: 0 !important; }
+    .overflow-x-auto, .overflow-y-auto, .custom-scrollbar { overflow: visible !important; max-height: none !important; }
+    #receiptPrintArea { display: block !important; border: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; box-shadow: none !important; }
+
+    .print-wrapper { width: 100% !important; box-sizing: border-box !important; border: 2px solid #000 !important; padding: 0 !important; margin: 0 !important; background-color: #fff !important; page-break-inside: avoid !important; }
+    .print-header-table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; margin: 0 !important; }
+    .print-header-table th, .print-header-table td { border: 1px solid #000 !important; padding: 3px 2px !important; text-align: center !important; vertical-align: middle !important; word-break: keep-all !important; }
+    .print-header-table tr:first-child th { border-top: none !important; }
+    .print-header-table tr > th:first-child, .print-header-table tr > td:first-child { border-left: none !important; }
+    .print-header-table tr > th:last-child, .print-header-table tr > td:last-child { border-right: none !important; }
+
+    .print-data-table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; margin: 0 !important; }
+    .print-data-table th, .print-data-table td { border: 1px solid #000 !important; padding: 2px 1px !important; text-align: center !important; vertical-align: middle !important; font-size: var(--print-data-font) !important; height: var(--print-row-height) !important; word-break: keep-all !important; }
+    .print-data-table th { font-weight: bold !important; font-size: var(--print-head-font) !important; letter-spacing: -0.6px !important; padding: 2px 0 !important; white-space: nowrap !important; }
+    .print-data-table tr > th:first-child, .print-data-table tr > td:first-child { border-left: none !important; }
+    .print-data-table tr > th:last-child, .print-data-table tr > td:last-child { border-right: none !important; }
+    .print-data-table tfoot tr:last-child td { border-bottom: none !important; }
+    
+    /* 인쇄 시 헌금 총합(연두색)과 온라인 합계(노란색) 강조 배경 유지 */
+    .print-bg-green { background-color: #bbf7d0 !important; }
+    .print-bg-yellow { background-color: #fef08a !important; }
+    
+    .text-title { font-size: 18pt !important; font-weight: 800 !important; letter-spacing: 2px !important; padding: 6px !important; }
+    .text-meta { font-size: 13pt !important; font-weight: bold !important; padding: 4px 2px !important; }
+    .text-body { font-size: var(--print-data-font) !important; height: var(--print-row-height) !important; padding: 2px 1px !important; }
+    .text-sign-space { font-size: 11pt !important; font-weight: normal !important; height: 52px !important; vertical-align: bottom !important; color: #555 !important; padding-bottom: 5px !important; }
+    .border-right-thick { border-right: 2px solid #000 !important; }
+}
